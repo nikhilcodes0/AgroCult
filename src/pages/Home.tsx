@@ -56,7 +56,7 @@ const chartConfig = {
   },
 } satisfies ChartConfig;
 
-const soilData = [{ month: "January", temperature: "20", fill: "#8bea7c" }];
+const soilData = [{ month: "January", temperature: "30", fill: "#8bea7c" }];
 function Home() {
 
 
@@ -98,7 +98,7 @@ function Home() {
     const interval = setInterval(() => {
       fetchTemperature();
       fetchHumidity();
-    }, 2000);
+    }, 1000);
 
     return () => clearInterval(interval);
   }, []);

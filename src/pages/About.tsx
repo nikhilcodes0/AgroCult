@@ -24,7 +24,7 @@ function About() {
               <img src={greenLeaf} alt="Leaf" className="mx-auto w-[85%] md:w-[60%] lg:w-[31rem]" />
             </div>
             <div className="lg:w-[60%] lg:left-[-9%]  md:w-[40%] bg-[#24ff02] w-[30%] h-[485.93px] left-[30%] top-[20%] opacity-[0.35] filter blur-[84.03px] rotate-[35.24deg] absolute -z-20"></div>
-            <div className="lg:left-[12%] lg:bottom-[23%] md:left-[27%] md:bottom-[23%] bg-[#fcff45] w-20 h-20 rounded-full flex items-center justify-center p-4 relative left-20 bottom-24">
+            <div className="lg:left-[12%] lg:bottom-[23%] md:left-[27%] md:bottom-[10rem] bg-[#fcff45] w-20 h-20 rounded-full flex items-center justify-center p-4 relative left-20 bottom-32">
               <p className="text-black font-semibold">Monstera</p>
             </div>
           </div>
