@@ -8,6 +8,8 @@ import {
   SheetTrigger,
 } from "@/components/ui/sheet";
 
+import { Link } from "react-router-dom";
+
 import { HamburgerMenuIcon } from "@radix-ui/react-icons";
 import { Button } from "@/components/ui/button";
 import logo from "../assets/logo-leaf.svg";
@@ -18,7 +20,7 @@ function Navbar() {
     <div className="bg-[rgba(255,_255,_255,_0.05)] border-[1.3px]  border-[rgba(255,255,255,0.05)] rounded-xl w-[90%] mx-auto my-6 px-3 py-4 ">
       <div className="flex justify-between">
         <div className="flex gap-2 items-center">
-          <p className="logo text-white">AgroCult</p>
+          <p className="logo text-white lg:text-xl">AgroCult</p>
           <img src={logo} alt="logo" />
         </div>
         <div className="text-white lg:mx-auto">
@@ -28,7 +30,7 @@ function Navbar() {
               <li className="cursor-pointer hover:text-white">About Us</li>
               <li className="cursor-pointer hover:text-white">Contact Us</li>
             </ul>
-          </div>  
+          </div>
           <Sheet>
             <SheetTrigger asChild>
               <Button size="icon" className="md:hidden">
@@ -47,6 +49,7 @@ function Navbar() {
               <div className="p-4 pb-0 mt-3">
                 <div className="flex items-center justify-center gap-4 flex-col">
                   <SheetClose className="w-full">
+                    <Link to="/">
                       <Button
                         variant="default"
                         size="icon"
@@ -54,15 +57,18 @@ function Navbar() {
                       >
                         Home
                       </Button>
+                    </Link>
                   </SheetClose>
                   <SheetClose className="w-full">
-                    <Button
-                      variant="secondary"
-                      size="icon"
-                      className="h-12 w-full shrink-0 rounded-full"
-                    >
-                      About US
-                    </Button>
+                    <Link to="/about">
+                      <Button
+                        variant="secondary"
+                        size="icon"
+                        className="h-12 w-full shrink-0 rounded-full"
+                      >
+                        About US
+                      </Button>
+                    </Link>
                   </SheetClose>
                   <SheetClose className="w-full">
                     <Button
