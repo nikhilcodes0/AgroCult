@@ -88,9 +88,9 @@ function Home() {
     <>
       <Navbar />
       <div className="w-[90%] mx-auto text-[#dcffd7]">
-        <div className="md:flex md:gap-14 md:items-center lg:justify-center">
+        <div className="md:flex md:gap-14  md:justify-between my-7 lg:items-center lg:text-xl">
           <div className="mb-4">
-            <p className="text-5xl w-60 leading-snug tracking-wide font-[Roboto}">
+            <p className="text-5xl 2xl:text-6xl lg:w-72 w-60 leading-snug tracking-wide font-[Roboto}">
               Real-time Temperature
             </p>
             <div className="flex items-center gap-2 my-6">
@@ -100,7 +100,7 @@ function Home() {
               </p>
             </div>
           </div>
-          <Card className="w-full bg-[#eaffe7] my-12 lg:my-0 lg:max-w-[500px]">
+          <Card className="w-full bg-[#eaffe7] my-12 lg:my-10 lg:max-w-[1000px] lg:max-h-[500px]">
             <CardHeader>
               <CardTitle>Temperature</CardTitle>
               <CardDescription className="text-black">
@@ -109,7 +109,7 @@ function Home() {
                 </p>
               </CardDescription>
             </CardHeader>
-            <CardContent>
+            <CardContent className="">
               <ChartContainer config={chartConfig}>
                 <AreaChart
                   accessibilityLayer
