@@ -15,6 +15,9 @@ import {
 } from "recharts";
 import thermometer from "../assets/thermometer-warm.svg";
 import humidity from "../assets/humidity.svg";
+import health from "../assets/health.svg";
+import disease from "../assets/disease.png";
+import plant from "../assets/plant.svg";
 
 import {
   Card,
@@ -24,6 +27,8 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
+import { Checkbox } from "@/components/ui/checkbox";
+import { Link } from "react-router-dom";
 
 import {
   ChartConfig,
@@ -68,13 +73,16 @@ const chartConfig = {
   },
 } satisfies ChartConfig;
 
-const soilData = [{ month: "January", temperature: "10", fill: "#8bea7c" }];
+const soilData = [{ month: "January", temperature: "50", fill: "#8bea7c" }];
 function Home() {
   const latestTemperatureData = temperatureData[temperatureData.length - 1];
   const HumidityData0 = humidityData[humidityData.length - 1];
   const HumidityData1 = humidityData[humidityData.length - 2];
   const latestHumidityData =
     HumidityData0.temperature - HumidityData1.temperature;
+
+  const soilPercentage = Number(soilData[0].temperature);
+  const endAngle = (soilPercentage / 100) * 360;
 
   return (
     <>
@@ -216,8 +224,8 @@ function Home() {
               >
                 <RadialBarChart
                   data={soilData}
-                  startAngle={0}
-                  endAngle={250}
+                  startAngle={90}
+                  endAngle={90 + endAngle}
                   innerRadius={90}
                   outerRadius={280}
                 >
@@ -253,7 +261,8 @@ function Home() {
                                 y={viewBox.cy}
                                 className="fill-secondary text-3xl font-bold "
                               >
-                                {soilData[0].temperature.toLocaleString() + "%" || "-"}
+                                {soilData[0].temperature.toLocaleString() +
+                                  "%" || "-"}
                               </tspan>
                             </text>
                           );
@@ -265,6 +274,49 @@ function Home() {
               </ChartContainer>
             </CardContent>
           </Card>
+        </div>
+        <Separator className="my-10 w-[95%] mx-auto opacity-100 bg-[#dcffd71a] p-[1px]" />
+
+        <div>
+          <div>
+            <p className="text-5xl leading-snug tracking-wide font-[Roboto}">
+              Plant Disease Status
+            </p>
+          </div>
+          <div>
+            <div className="mt-10">
+              <img src={disease} alt="" />
+            </div>
+            <div className="flex items-end gap-3 float-end flex-col">
+              <div className="flex items-center gap-3">
+                <Checkbox id="healthy" className="bg-white" />
+                <label
+                  htmlFor="healthy"
+                  className="text-[#8bea7c] font-medium text-2xl"
+                >
+                  Healthy
+                  <span className="ml-2">
+                    <img src={health} alt="" className="inline" />
+                  </span>
+                </label>
+              </div>
+              <div className="flex items-center gap-3">
+                <Checkbox id="healthy" className="bg-white" />
+                <label
+                  htmlFor="healthy"
+                  className="text-[#d22e2a] font-semibold text-2xl"
+                >
+                  Disease Detected
+                  <span className="ml-2">
+                    <img src={plant} alt="" className="inline" />
+                  </span>
+                </label>
+              </div>
+                <Link to="/about">View Details</Link>
+                    
+
+            </div>
+          </div>
         </div>
       </div>
     </>
