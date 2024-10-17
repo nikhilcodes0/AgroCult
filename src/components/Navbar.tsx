@@ -23,7 +23,7 @@ function Navbar() {
         </div>
         <div className="text-white lg:mx-auto">
           <div className="hidden md:block ">
-            <ul className="flex gap-4 text-[#DCFFD7] font-semibold">
+            <ul className="flex gap-8 pr-6 lg:mr-0 lg:gap-12 lg:text-lg text-[#DCFFD7] font-semibold">
               <li className="cursor-pointer hover:text-white">Home</li>
               <li className="cursor-pointer hover:text-white">About Us</li>
               <li className="cursor-pointer hover:text-white">Contact Us</li>
