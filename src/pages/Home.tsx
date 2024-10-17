@@ -1,9 +1,10 @@
+import { useEffect, useState } from "react";
 import Navbar from "@/components/Navbar";
 import {
   Area,
   AreaChart,
   CartesianGrid,
-  XAxis,
+  XAxis,YAxis,
   Bar,
   BarChart,
   LabelList,
@@ -14,7 +15,7 @@ import {
   RadialBarChart,
 } from "recharts";
 import thermometer from "../assets/thermometer-warm.svg";
-import humidity from "../assets/humidity.svg";
+import humidityImage from "../assets/humidity.svg";
 // import health from "../assets/health.svg";
 // import disease from "../assets/disease.png";
 // import plant from "../assets/plant.svg";
@@ -37,26 +38,8 @@ import {
   ChartTooltipContent,
 } from "@/components/ui/chart";
 
-const temperatureData = [
-  { month: "January", temperature: 18 },
-  { month: "February", temperature: 30 },
-  { month: "March", temperature: 23 },
-  { month: "April", temperature: 73 },
-  { month: "May", temperature: 20 },
-  { month: "June", temperature: 19 },
-  { month: "July", temperature: 20 },
-];
 
-const humidityData = [
-  { month: "January", temperature: 8 },
-  { month: "February", temperature: 38 },
-  { month: "March", temperature: 20 },
-  { month: "April", temperature: 43 },
-  { month: "May", temperature: 10 },
-  { month: "June", temperature: 29 },
-  { month: "July", temperature: 60 },
-  { month: "August", temperature: 40 },
-];
+
 
 const chartConfig = {
   temperature: {
@@ -73,16 +56,80 @@ const chartConfig = {
   },
 } satisfies ChartConfig;
 
-const soilData = [{ month: "January", temperature: "50", fill: "#8bea7c" }];
+const soilData = [{ month: "January", temperature: "20", fill: "#8bea7c" }];
 function Home() {
-  const latestTemperatureData = temperatureData[temperatureData.length - 1];
-  const HumidityData0 = humidityData[humidityData.length - 1];
-  const HumidityData1 = humidityData[humidityData.length - 2];
-  const latestHumidityData =
-    HumidityData0.temperature - HumidityData1.temperature;
+  // const latestTemperatureData = temperatureData[temperatureData.length - 1];
+  // const HumidityData0 = humidityData[humidityData.length - 1];
+  // const HumidityData1 = humidityData[humidityData.length - 2];
+  // const latestHumidityData =
+  //   HumidityData0.temperature - HumidityData1.temperature;
 
   const soilPercentage = Number(soilData[0].temperature);
   const endAngle = (soilPercentage / 100) * 360;
+
+  const [temperature, setTemperature] = useState<{ time: string; temperature: number }[]>([]);
+  const [humidity, setHumidity] = useState<{ time: string; humidity: number }[]>([]);
+  // const [humidity, setHumidity] = useState([]);
+  const [lastTemperature, setLastTemperature] = useState<number | null>(null);
+  const [lastHumidity, setLastHumidity] = useState<number | null>(null);
+
+  const fetchTemperature = async () => {
+    try {
+      const response = await fetch(
+        'https://sugoi-api.vercel.app/agri/realtime_data'
+      );
+      const result = await response.json();
+
+      setLastTemperature(result.temperature);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  const fetchHumidity = async () => {
+    try {
+      const response = await fetch(
+        'https://sugoi-api.vercel.app/agri/realtime_data'
+      );
+      const result = await response.json();
+
+      setLastHumidity(result.humidity);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      fetchTemperature();
+      fetchHumidity();
+    }, 2000);
+
+    return () => clearInterval(interval);
+  }, []);
+
+  useEffect(() => {
+    if (lastTemperature !== null) {
+      setTemperature((prevData) => [
+        ...prevData.slice(-19),
+        {
+          time: new Date().toLocaleTimeString(),
+          temperature: lastTemperature,
+        },
+      ]);
+    }
+  }, [lastTemperature]);
+
+  useEffect(() => {
+    if (lastHumidity !== null) {
+      setHumidity((prevData) => [
+        ...prevData.slice(-19),
+        {
+          time: new Date().toLocaleTimeString(),
+          humidity: lastHumidity,
+        },
+      ]);
+    }
+  }, [lastHumidity]);
 
   return (
     <>
@@ -106,7 +153,7 @@ function Home() {
               <CardTitle>Temperature</CardTitle>
               <CardDescription className="text-black">
                 <p className="font-semibold text-2xl">
-                  {latestTemperatureData.temperature}°C
+                  {lastTemperature}°C
                 </p>
               </CardDescription>
             </CardHeader>
@@ -114,7 +161,7 @@ function Home() {
               <ChartContainer config={chartConfig}>
                 <AreaChart
                   accessibilityLayer
-                  data={temperatureData}
+                  data={temperature}
                   margin={{
                     left: 0,
                     right: 0,
@@ -122,13 +169,15 @@ function Home() {
                 >
                   <CartesianGrid vertical={false} />
                   <XAxis
-                    dataKey="month"
+                    dataKey="time"
                     tickLine={false}
                     axisLine={false}
                     tickMargin={5}
-                    tickFormatter={(value) => value.slice(0, 3)}
+                    tickFormatter={(value) => value.slice(0, 4)}
                     style={{ fill: "#000000" }}
                   />
+                  <YAxis />
+                  
                   <ChartTooltip
                     cursor={false}
                     content={<ChartTooltipContent indicator="line" />}
@@ -154,7 +203,7 @@ function Home() {
               Real-time Humidity
             </p>
             <div className="flex items-center gap-2 my-6 text-right md:w-fit md:ml-auto">
-              <img src={humidity} alt="" className="w-6" />
+              <img src={humidityImage} alt="" className="w-6" />
               <p className="opacity-80 font-semibold">
                 See your real time humidity
               </p>
@@ -163,29 +212,29 @@ function Home() {
           <Card className="w-full bg-[#1eff00] border-transparent my-12 md:w-1/2">
             <CardHeader>
               <CardTitle className="flex items-center justify-between w-fit gap-2">
-                <img src={humidity} alt="" className="w-6 -mx-2 stroke-black" />
+                <img src={humidityImage} alt="" className="w-6 -mx-2 stroke-black" />
                 Humidity
               </CardTitle>
               <CardDescription className="text-black text-3xl font-bold pt-4">
-                {latestHumidityData} °C
+                {lastHumidity}%
               </CardDescription>
             </CardHeader>
             <CardContent>
               <ChartContainer config={chartConfig}>
                 <BarChart
                   accessibilityLayer
-                  data={humidityData}
+                  data={humidity.slice(-6)}
                   margin={{
                     top: 30,
                   }}
                 >
                   <CartesianGrid vertical={false} />
                   <XAxis
-                    dataKey="month"
+                    dataKey="time"
                     tickLine={false}
                     tickMargin={10}
                     axisLine={false}
-                    tickFormatter={(value) => value.slice(0, 3)}
+                    tickFormatter={(value) => value.slice(0, 4)}
                     style={{ fill: "#000000" }}
                   />
                   <ChartTooltip
@@ -193,7 +242,7 @@ function Home() {
                     content={<ChartTooltipContent hideLabel />}
                   />
                   <Bar
-                    dataKey="temperature"
+                    dataKey="humidity"
                     fill="var(--color-humidity)"
                     radius={8}
                   >
