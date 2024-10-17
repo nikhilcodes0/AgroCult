@@ -10,13 +10,14 @@ import {
 import { HamburgerMenuIcon } from "@radix-ui/react-icons";
 import { Button } from "@/components/ui/button";
 import logo from "../assets/logo-leaf.svg";
+import '../App.css'
 
 function Navbar() {
   return (
     <div className="bg-[rgba(255,_255,_255,_0.05)] border-[1.3px]  border-[rgba(255,255,255,0.05)] rounded-lg w-[90%] mx-auto my-6 px-3 py-4 ">
       <div className="flex justify-between">
         <div className="flex gap-2 items-center">
-          <p className="font-[Mynerve] text-white">AgroCult</p>
+          <p className="logo text-white">AgroCult</p>
           <img src={logo} alt="logo" />
         </div>
         <div className="text-white">
