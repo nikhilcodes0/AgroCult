@@ -26,8 +26,12 @@ function Navbar() {
         <div className="text-white lg:mx-auto">
           <div className="hidden md:block ">
             <ul className="flex gap-8 pr-6 lg:mr-0 lg:gap-12 lg:text-lg text-[#DCFFD7] font-semibold">
+              <a href="/">
               <li className="cursor-pointer hover:text-white">Home</li>
-              <li className="cursor-pointer hover:text-white">About Us</li>
+              </a>
+              <a href="/stats">
+              <li className="cursor-pointer hover:text-white">Stats</li>
+              </a>
               <li className="cursor-pointer hover:text-white">Contact Us</li>
             </ul>
           </div>
@@ -60,13 +64,13 @@ function Navbar() {
                     </Link>
                   </SheetClose>
                   <SheetClose className="w-full">
-                    <Link to="/about">
+                    <Link to="/stats">
                       <Button
                         variant="secondary"
                         size="icon"
                         className="h-12 w-full shrink-0 rounded-full"
                       >
-                        About US
+                        Stats
                       </Button>
                     </Link>
                   </SheetClose>
@@ -76,7 +80,7 @@ function Navbar() {
                       size="icon"
                       className="h-12 w-full shrink-0 rounded-full"
                     >
-                      Stats
+                      Contact Us
                     </Button>
                   </SheetClose>
                 </div>
