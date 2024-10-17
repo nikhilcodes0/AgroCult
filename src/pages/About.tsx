@@ -53,12 +53,12 @@ function About() {
 
         <div className="bg-[#24513b] p-4 flex flex-col gap-3 rounded-lg w-[100%]">
           <div className="flex gap-2 w-full">
-            <img src={img1} alt="" className="w-full" />
-            <img src={img2} alt="" className="w-full"/>
+            <img src={img1} alt="" className="w-[50%] rounded-md" />
+            <img src={img2} alt="" className="w-[50%] rounded-md"/>
           </div>
           <div className="flex gap-2 w-full">
-            <img src={img1} alt="" className="w-full"/>
-            <img src={img2} alt="" className="w-full"/>
+            <img src={img1} alt="" className="w-[50%] rounded-md"/>
+            <img src={img2} alt="" className="w-[50%] rounded-md"/>
           </div>
         </div>
         <div className="mt-10">
