@@ -58,18 +58,14 @@ const chartConfig = {
 
 const soilData = [{ month: "January", temperature: "20", fill: "#8bea7c" }];
 function Home() {
-  // const latestTemperatureData = temperatureData[temperatureData.length - 1];
-  // const HumidityData0 = humidityData[humidityData.length - 1];
-  // const HumidityData1 = humidityData[humidityData.length - 2];
-  // const latestHumidityData =
-  //   HumidityData0.temperature - HumidityData1.temperature;
+
 
   const soilPercentage = Number(soilData[0].temperature);
   const endAngle = (soilPercentage / 100) * 360;
 
   const [temperature, setTemperature] = useState<{ time: string; temperature: number }[]>([]);
   const [humidity, setHumidity] = useState<{ time: string; humidity: number }[]>([]);
-  // const [humidity, setHumidity] = useState([]);
+
   const [lastTemperature, setLastTemperature] = useState<number | null>(null);
   const [lastHumidity, setLastHumidity] = useState<number | null>(null);
 
