@@ -15,9 +15,9 @@ import {
 } from "recharts";
 import thermometer from "../assets/thermometer-warm.svg";
 import humidity from "../assets/humidity.svg";
-import health from "../assets/health.svg";
-import disease from "../assets/disease.png";
-import plant from "../assets/plant.svg";
+// import health from "../assets/health.svg";
+// import disease from "../assets/disease.png";
+// import plant from "../assets/plant.svg";
 
 import {
   Card,
@@ -27,8 +27,8 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
-import { Checkbox } from "@/components/ui/checkbox";
-import { Link } from "react-router-dom";
+// import { Checkbox } from "@/components/ui/checkbox";
+// import { Link } from "react-router-dom";
 
 import {
   ChartConfig,
