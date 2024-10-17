@@ -1,4 +1,5 @@
 import Navbar from "../components/Navbar";
+import Footer from "../components/Footer";
 import { Separator } from "@/components/ui/separator";
 import greenLeaf from "../assets/green-leaf.png";
 import leafBg from "../assets/Leafbg.png";
@@ -87,6 +88,8 @@ function About() {
           </p>
         </div>
       </div>
+
+      <Footer />
     </>
   );
 }
