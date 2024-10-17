@@ -86,11 +86,12 @@ function Home() {
 
   return (
     <>
+    <div className="lg:px-24 xl:px-32 2xl:px-48">
       <Navbar />
       <div className="w-[90%] mx-auto text-[#dcffd7]">
-        <div className="md:flex md:gap-14  md:justify-between my-7 lg:items-center lg:text-xl">
-          <div className="mb-4">
-            <p className="text-5xl 2xl:text-6xl lg:w-72 w-60 leading-snug tracking-wide font-[Roboto}">
+        <div className="md:flex md:gap-14  md:justify-between my-7 md:items-center lg:text-xl">
+          <div className="mb-4 flex-col items-center h-fit md:flex lg:w-1/2 lg:items-start">
+            <p className="text-5xl lg:w-72 w-60 leading-snug tracking-wide font-[Roboto} xl:w-80 xl:text-7xl 2xl:text-8xl 2xl:w-[28rem]">
               Real-time Temperature
             </p>
             <div className="flex items-center gap-2 my-6">
@@ -100,7 +101,7 @@ function Home() {
               </p>
             </div>
           </div>
-          <Card className="w-full bg-[#eaffe7] my-12 lg:my-10 lg:max-w-[1000px] lg:max-h-[500px]">
+          <Card className="w-full bg-[#eaffe7] my-12 lg:my-10 md:w-[50%]">
             <CardHeader>
               <CardTitle>Temperature</CardTitle>
               <CardDescription className="text-black">
@@ -147,19 +148,19 @@ function Home() {
 
         <Separator className="my-10  mx-auto opacity-100 bg-[#dcffd71a] p-[1px]" />
 
-        <div className="md:flex md:flex-row-reverse md:gap-14">
-          <div>
-            <p className="text-5xl leading-snug tracking-wide font-[Roboto}">
+        <div className="md:flex md:flex-row-reverse md:gap-16 items-center lg:justify-between">
+          <div className="md:text-right">
+            <p className="text-5xl leading-snug tracking-wide font-[Roboto} xl:w-80 xl:text-7xl 2xl:text-8xl 2xl:w-[28rem]">
               Real-time Humidity
             </p>
-            <div className="flex items-center gap-2 my-6">
+            <div className="flex items-center gap-2 my-6 text-right md:w-fit md:ml-auto">
               <img src={humidity} alt="" className="w-6" />
               <p className="opacity-80 font-semibold">
                 See your real time humidity
               </p>
             </div>
           </div>
-          <Card className="w-full bg-[#1eff00] border-transparent my-12">
+          <Card className="w-full bg-[#1eff00] border-transparent my-12 md:w-1/2">
             <CardHeader>
               <CardTitle className="flex items-center justify-between w-fit gap-2">
                 <img src={humidity} alt="" className="w-6 -mx-2 stroke-black" />
@@ -210,9 +211,9 @@ function Home() {
         </div>
         <Separator className="my-10 mx-auto opacity-100 bg-[#dcffd71a] p-[1px]" />
 
-        <div className="md:grid md:grid-cols-2">
+        <div className="md:grid md:grid-cols-2 md:items-center">
           <div className="mb-10">
-            <p className="text-5xl leading-snug tracking-wide font-[Roboto}">
+            <p className="text-5xl leading-snug tracking-wide font-[Roboto} xl:w-80 xl:text-6xl 2xl:text-8xl 2xl:w-[38rem]">
               The current Soil Moisture
             </p>
           </div>
@@ -220,7 +221,7 @@ function Home() {
             <CardContent className="flex-1 pb-0">
               <ChartContainer
                 config={chartConfig}
-                className="mx-auto aspect-square max-h-[450px]"
+                className="mx-auto aspect-square max-h-[450px] "
               >
                 <RadialBarChart
                   data={soilData}
@@ -233,7 +234,7 @@ function Home() {
                     gridType="circle"
                     radialLines={false}
                     stroke="none"
-                    className="first:fill-[#dcffd7] last:fill-background "
+                    className="first:fill-[#dcffd7] last:fill-background"
                     polarRadius={[126, 54]}
                   />
                   <RadialBar
@@ -318,6 +319,7 @@ function Home() {
             </div>
           </div>
         </div> */}
+      </div>
       </div>
     </>
   );
