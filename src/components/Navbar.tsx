@@ -15,16 +15,23 @@ import "../App.css";
 
 function Navbar() {
   return (
-    <div className="bg-[rgba(255,_255,_255,_0.05)] border-[1.3px]  border-[rgba(255,255,255,0.05)] rounded-lg w-[90%] mx-auto my-6 px-3 py-4 ">
+    <div className="bg-[rgba(255,_255,_255,_0.05)] border-[1.3px]  border-[rgba(255,255,255,0.05)] rounded-xl w-[90%] mx-auto my-6 px-3 py-4 ">
       <div className="flex justify-between">
         <div className="flex gap-2 items-center">
           <p className="logo text-white">AgroCult</p>
           <img src={logo} alt="logo" />
         </div>
-        <div className="text-white">
+        <div className="text-white lg:mx-auto">
+          <div className="hidden md:block ">
+            <ul className="flex gap-4 text-[#DCFFD7] font-semibold">
+              <li className="cursor-pointer hover:text-white">Home</li>
+              <li className="cursor-pointer hover:text-white">About Us</li>
+              <li className="cursor-pointer hover:text-white">Contact Us</li>
+            </ul>
+          </div>  
           <Sheet>
             <SheetTrigger asChild>
-              <Button size="icon">
+              <Button size="icon" className="md:hidden">
                 <HamburgerMenuIcon />
               </Button>
             </SheetTrigger>

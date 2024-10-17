@@ -87,8 +87,8 @@ function Home() {
   return (
     <>
       <Navbar />
-      <div className="px-6 text-[#dcffd7]">
-        <div>
+      <div className="w-[90%] mx-auto text-[#dcffd7]">
+        <div className="md:flex md:gap-14 md:items-center lg:justify-center">
           <div className="mb-4">
             <p className="text-5xl w-60 leading-snug tracking-wide font-[Roboto}">
               Real-time Temperature
@@ -100,7 +100,7 @@ function Home() {
               </p>
             </div>
           </div>
-          <Card className="w-full bg-[#eaffe7]">
+          <Card className="w-full bg-[#eaffe7] my-12 lg:my-0 lg:max-w-[500px]">
             <CardHeader>
               <CardTitle>Temperature</CardTitle>
               <CardDescription className="text-black">
@@ -145,9 +145,9 @@ function Home() {
           </Card>
         </div>
 
-        <Separator className="my-10 w-[95%] mx-auto opacity-100 bg-[#dcffd71a] p-[1px]" />
+        <Separator className="my-10  mx-auto opacity-100 bg-[#dcffd71a] p-[1px]" />
 
-        <div>
+        <div className="md:flex md:flex-row-reverse md:gap-14">
           <div>
             <p className="text-5xl leading-snug tracking-wide font-[Roboto}">
               Real-time Humidity
@@ -159,7 +159,7 @@ function Home() {
               </p>
             </div>
           </div>
-          <Card className="w-full bg-[#1eff00] border-transparent">
+          <Card className="w-full bg-[#1eff00] border-transparent my-12">
             <CardHeader>
               <CardTitle className="flex items-center justify-between w-fit gap-2">
                 <img src={humidity} alt="" className="w-6 -mx-2 stroke-black" />
@@ -208,15 +208,15 @@ function Home() {
             </CardContent>
           </Card>
         </div>
-        <Separator className="my-10 w-[95%] mx-auto opacity-100 bg-[#dcffd71a] p-[1px]" />
+        <Separator className="my-10 mx-auto opacity-100 bg-[#dcffd71a] p-[1px]" />
 
-        <div>
+        <div className="md:grid md:grid-cols-2">
           <div className="mb-10">
             <p className="text-5xl leading-snug tracking-wide font-[Roboto}">
-              The current Soil Moisture Percentage
+              The current Soil Moisture
             </p>
           </div>
-          <Card className="flex flex-col bg-transparent border-transparent mt-4">
+          <Card className="flex flex-col bg-transparent border-none shadow-none mt-4">
             <CardContent className="flex-1 pb-0">
               <ChartContainer
                 config={chartConfig}
@@ -275,9 +275,9 @@ function Home() {
             </CardContent>
           </Card>
         </div>
-        <Separator className="my-10 w-[95%] mx-auto opacity-100 bg-[#dcffd71a] p-[1px]" />
+        {/*  <Separator className="my-10 w-[95%] mx-auto opacity-100 bg-[#dcffd71a] p-[1px]" />
 
-        <div>
+       <div>
           <div>
             <p className="text-5xl leading-snug tracking-wide font-[Roboto}">
               Plant Disease Status
@@ -317,7 +317,7 @@ function Home() {
 
             </div>
           </div>
-        </div>
+        </div> */}
       </div>
     </>
   );
