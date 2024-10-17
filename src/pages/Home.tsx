@@ -7,6 +7,11 @@ import {
   Bar,
   BarChart,
   LabelList,
+  Label,
+  PolarGrid,
+  PolarRadiusAxis,
+  RadialBar,
+  RadialBarChart,
 } from "recharts";
 import thermometer from "../assets/thermometer-warm.svg";
 import humidity from "../assets/humidity.svg";
@@ -45,6 +50,7 @@ const humidityData = [
   { month: "May", temperature: 10 },
   { month: "June", temperature: 29 },
   { month: "July", temperature: 60 },
+  { month: "August", temperature: 40 },
 ];
 
 const chartConfig = {
@@ -56,11 +62,19 @@ const chartConfig = {
     label: "humidity",
     color: "#fcff45",
   },
+  soil: {
+    label: "soil",
+    color: "#8bea7c",
+  },
 } satisfies ChartConfig;
 
+const soilData = [{ month: "January", temperature: "10", fill: "#8bea7c" }];
 function Home() {
   const latestTemperatureData = temperatureData[temperatureData.length - 1];
-  const latestHumidityData = humidityData[humidityData.length - 1];
+  const HumidityData0 = humidityData[humidityData.length - 1];
+  const HumidityData1 = humidityData[humidityData.length - 2];
+  const latestHumidityData =
+    HumidityData0.temperature - HumidityData1.temperature;
 
   return (
     <>
@@ -139,9 +153,12 @@ function Home() {
           </div>
           <Card className="w-full bg-[#1eff00] border-transparent">
             <CardHeader>
-              <CardTitle>Bar Chart - Label</CardTitle>
-              <CardDescription>
-                {latestHumidityData.temperature} °C
+              <CardTitle className="flex items-center justify-between w-fit gap-2">
+                <img src={humidity} alt="" className="w-6 -mx-2 stroke-black" />
+                Humidity
+              </CardTitle>
+              <CardDescription className="text-black text-3xl font-bold pt-4">
+                {latestHumidityData} °C
               </CardDescription>
             </CardHeader>
             <CardContent>
@@ -150,7 +167,7 @@ function Home() {
                   accessibilityLayer
                   data={humidityData}
                   margin={{
-                    top: 20,
+                    top: 30,
                   }}
                 >
                   <CartesianGrid vertical={false} />
@@ -179,6 +196,72 @@ function Home() {
                     />
                   </Bar>
                 </BarChart>
+              </ChartContainer>
+            </CardContent>
+          </Card>
+        </div>
+        <Separator className="my-10 w-[95%] mx-auto opacity-100 bg-[#dcffd71a] p-[1px]" />
+
+        <div>
+          <div className="mb-10">
+            <p className="text-5xl leading-snug tracking-wide font-[Roboto}">
+              The current Soil Moisture Percentage
+            </p>
+          </div>
+          <Card className="flex flex-col bg-transparent border-transparent mt-4">
+            <CardContent className="flex-1 pb-0">
+              <ChartContainer
+                config={chartConfig}
+                className="mx-auto aspect-square max-h-[450px]"
+              >
+                <RadialBarChart
+                  data={soilData}
+                  startAngle={0}
+                  endAngle={250}
+                  innerRadius={90}
+                  outerRadius={280}
+                >
+                  <PolarGrid
+                    gridType="circle"
+                    radialLines={false}
+                    stroke="none"
+                    className="first:fill-[#dcffd7] last:fill-background "
+                    polarRadius={[126, 54]}
+                  />
+                  <RadialBar
+                    dataKey="temperature"
+                    background
+                    cornerRadius={10}
+                  />
+                  <PolarRadiusAxis
+                    tick={false}
+                    tickLine={false}
+                    axisLine={false}
+                  >
+                    <Label
+                      content={({ viewBox }) => {
+                        if (viewBox && "cx" in viewBox && "cy" in viewBox) {
+                          return (
+                            <text
+                              x={viewBox.cx}
+                              y={viewBox.cy}
+                              textAnchor="middle"
+                              dominantBaseline="middle"
+                            >
+                              <tspan
+                                x={viewBox.cx}
+                                y={viewBox.cy}
+                                className="fill-secondary text-3xl font-bold "
+                              >
+                                {soilData[0].temperature.toLocaleString() + "%" || "-"}
+                              </tspan>
+                            </text>
+                          );
+                        }
+                      }}
+                    />
+                  </PolarRadiusAxis>
+                </RadialBarChart>
               </ChartContainer>
             </CardContent>
           </Card>
