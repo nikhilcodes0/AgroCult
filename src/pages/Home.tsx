@@ -5,7 +5,8 @@ import {
   Area,
   AreaChart,
   CartesianGrid,
-  XAxis,YAxis,
+  XAxis,
+  YAxis,
   Bar,
   BarChart,
   LabelList,
@@ -39,9 +40,6 @@ import {
   ChartTooltipContent,
 } from "@/components/ui/chart";
 
-
-
-
 const chartConfig = {
   temperature: {
     label: "temperature",
@@ -59,270 +57,301 @@ const chartConfig = {
 
 const soilData = [{ month: "January", temperature: "30", fill: "#8bea7c" }];
 function Home() {
-
-
   const soilPercentage = Number(soilData[0].temperature);
   const endAngle = (soilPercentage / 100) * 360;
 
-  const [temperature, setTemperature] = useState<{ time: string; temperature: number }[]>([]);
-  const [humidity, setHumidity] = useState<{ time: string; humidity: number }[]>([]);
+  const [temperature, setTemperature] = useState<
+    { time: string; temperature: number }[]
+  >([]);
+  const [humidity, setHumidity] = useState<
+    { time: string; humidity: number }[]
+  >([]);
 
-  const [lastTemperature, setLastTemperature] = useState<number | null>(null);
-  const [lastHumidity, setLastHumidity] = useState<number | null>(null);
+  // Update the state to hold an object
+const [lastTemperature, setLastTemperature] = useState<{ temperature: number; timestamp: number } | null>(null);
+
+const [lastHumidity, setLastHumidity] = useState<{ humidity: number; timestamp: number } | null>(null);
 
   const fetchTemperature = async () => {
     try {
       const response = await fetch(
-        'https://sugoi-api.vercel.app/agri/realtime_data'
+        "https://sugoi-api.vercel.app/agri/realtime_data"
       );
       const result = await response.json();
+      // console.log("Fetched Temperature Data:", result.temperature);
 
-      setLastTemperature(result.temperature);
+      setLastTemperature({
+        temperature: result.temperature,
+        timestamp: Date.now(),
+      });
+      setLastHumidity({
+        humidity: result.humidity,
+        timestamp: Date.now(),
+      });
     } catch (error) {
       console.log(error);
     }
   };
-  const fetchHumidity = async () => {
-    try {
-      const response = await fetch(
-        'https://sugoi-api.vercel.app/agri/realtime_data'
-      );
-      const result = await response.json();
 
-      setLastHumidity(result.humidity);
-    } catch (error) {
-      console.log(error);
-    }
-  };
 
   useEffect(() => {
     const interval = setInterval(() => {
+      // console.log("Fetching Data...");
       fetchTemperature();
-      fetchHumidity();
-    }, 1000);
+    }, 5000);
 
     return () => clearInterval(interval);
   }, []);
 
+
+
   useEffect(() => {
     if (lastTemperature !== null) {
-      setTemperature((prevData) => [
-        ...prevData.slice(-19),
-        {
-          time: new Date().toLocaleTimeString(),
-          temperature: lastTemperature,
-        },
-      ]);
+      const newData = {
+        time: new Date().toLocaleTimeString(),
+        temperature: lastTemperature.temperature, // Access temperature
+      };
+      setTemperature((prevData) => {
+        const updatedData = [
+          ...prevData,
+          { ...newData, timestamp: lastTemperature.timestamp }, // Use the new timestamp
+        ].slice(-20);
+        // console.log("Updated Temperature Data:", updatedData);
+        return updatedData;
+      });
     }
   }, [lastTemperature]);
+  
 
   useEffect(() => {
     if (lastHumidity !== null) {
-      setHumidity((prevData) => [
-        ...prevData.slice(-19),
-        {
-          time: new Date().toLocaleTimeString(),
-          humidity: lastHumidity,
-        },
-      ]);
+      const newData = {
+        time: new Date().toLocaleTimeString(),
+        humidity: lastHumidity.humidity,
+      };
+      setHumidity((prevData) => {
+        // console.log("Previous Humidity Data:", prevData);
+        // console.log("New Humidity Data:", newData);
+
+        // Include the timestamp to ensure the data is unique
+        const updatedData = [
+          ...prevData,
+          { ...newData, timestamp: lastHumidity.timestamp }, // Add a unique timestamp
+        ].slice(-20);
+        // console.log("Updated Humidity Data:", updatedData);
+        return updatedData;
+      });
     }
   }, [lastHumidity]);
 
+
+
   return (
     <>
-    <div className="lg:px-24 xl:px-32 2xl:px-48">
-      <Navbar />
-      <div className="w-[90%] mx-auto text-[#dcffd7]">
-        <div className="md:flex md:gap-14  md:justify-between my-7 md:items-center lg:text-xl">
-          <div className="mb-4 flex-col items-center h-fit md:flex lg:w-1/2 lg:items-start">
-            <p className="text-5xl lg:w-72 w-60 leading-snug tracking-wide font-[Roboto} xl:w-80 xl:text-7xl 2xl:text-8xl 2xl:w-[28rem]">
-              Real-time Temperature
-            </p>
-            <div className="flex items-center gap-2 my-6">
-              <img src={thermometer} alt="" className="w-8" />
-              <p className="opacity-80 font-semibold">
-                See your real time temperature
+      <div className="lg:px-24 xl:px-32 2xl:px-48">
+        <Navbar />
+        <div className="w-[90%] mx-auto text-[#dcffd7]">
+          <div className="md:flex md:gap-14  md:justify-between my-7 md:items-center lg:text-xl">
+            <div className="mb-4 flex-col items-center h-fit md:flex lg:w-1/2 lg:items-start">
+              <p className="text-5xl lg:w-72 w-60 leading-snug tracking-wide font-[Roboto} xl:w-80 xl:text-7xl 2xl:text-8xl 2xl:w-[28rem]">
+                Real-time Temperature
               </p>
-            </div>
-          </div>
-          <Card className="w-full bg-[#eaffe7] my-12 lg:my-10 md:w-[50%]">
-            <CardHeader>
-              <CardTitle>Temperature</CardTitle>
-              <CardDescription className="text-black">
-                <p className="font-semibold text-2xl">
-                  {lastTemperature}°C
+              <div className="flex items-center gap-2 my-6">
+                <img src={thermometer} alt="" className="w-8" />
+                <p className="opacity-80 font-semibold">
+                  See your real time temperature
                 </p>
-              </CardDescription>
-            </CardHeader>
-            <CardContent className="">
-              <ChartContainer config={chartConfig}>
-                <AreaChart
-                  accessibilityLayer
-                  data={temperature}
-                  margin={{
-                    left: 0,
-                    right: 0,
-                  }}
-                >
-                  <CartesianGrid vertical={false} />
-                  <XAxis
-                    dataKey="time"
-                    tickLine={false}
-                    axisLine={false}
-                    tickMargin={5}
-                    tickFormatter={(value) => value.slice(0, 4)}
-                    style={{ fill: "#000000" }}
-                  />
-                  <YAxis />
-                  
-                  <ChartTooltip
-                    cursor={false}
-                    content={<ChartTooltipContent indicator="line" />}
-                  />
-                  <Area
-                    dataKey="temperature"
-                    type="natural"
-                    fill="var(--color-temperature)"
-                    fillOpacity={0.9}
-                    stroke="var(--color-temperature)"
-                  />
-                </AreaChart>
-              </ChartContainer>
-            </CardContent>
-          </Card>
-        </div>
+              </div>
+            </div>
+            <Card className="w-full bg-[#eaffe7] my-12 lg:my-10 md:w-[50%]">
+              <CardHeader>
+                <CardTitle>Temperature</CardTitle>
+                <CardDescription className="text-black">
+                  <p className="font-semibold text-2xl">{lastTemperature?.temperature}°C</p>
+                </CardDescription>
+              </CardHeader>
+              <CardContent className="">
+                <ChartContainer config={chartConfig}>
+                  <AreaChart
+                    accessibilityLayer
+                    key={temperature.length}
+                    data={temperature.slice(-6)}
+                    margin={{
+                      left: 0,
+                      right: 0,
+                    }}
+                    className="text-white"
+                  >
+                    <CartesianGrid vertical={false} />
+                    <XAxis
+                      dataKey="time"
+                      tickLine={false}
+                      axisLine={false}
+                      tickMargin={5}
+                      tickFormatter={(value) => value.slice(0, 4)}
+                      style={{ fill: "#000000" }}
+                    />
+                    <YAxis />
 
-        <Separator className="my-10  mx-auto opacity-100 bg-[#dcffd71a] p-[1px]" />
+                    <ChartTooltip
+                      cursor={false}
+                      content={<ChartTooltipContent indicator="line" 
+                      className="text-white"
+                      formatter={(value) => `${value}°C`}
 
-        <div className="md:flex md:flex-row-reverse md:gap-16 items-center lg:justify-between">
-          <div className="md:text-right">
-            <p className="text-5xl leading-snug tracking-wide font-[Roboto} xl:w-80 xl:text-7xl 2xl:text-8xl 2xl:w-[28rem]">
-              Real-time Humidity
-            </p>
-            <div className="flex items-center gap-2 my-6 text-right md:w-fit md:ml-auto">
-              <img src={humidityImage} alt="" className="w-6" />
-              <p className="opacity-80 font-semibold">
-                See your real time humidity
+                      />}
+                    />
+                    <Area
+                      dataKey="temperature"
+                      type="natural"
+                      fill="var(--color-temperature)"
+                      fillOpacity={0.9}
+                      stroke="var(--color-temperature)"
+                    />
+                  </AreaChart>
+                </ChartContainer>
+              </CardContent>
+            </Card>
+          </div>
+
+          <Separator className="my-10  mx-auto opacity-100 bg-[#dcffd71a] p-[1px]" />
+
+          <div className="md:flex md:flex-row-reverse md:gap-16 items-center lg:justify-between">
+            <div className="md:text-right">
+              <p className="text-5xl leading-snug tracking-wide font-[Roboto} xl:w-80 xl:text-7xl 2xl:text-8xl 2xl:w-[28rem]">
+                Real-time Humidity
+              </p>
+              <div className="flex items-center gap-2 my-6 text-right md:w-fit md:ml-auto">
+                <img src={humidityImage} alt="" className="w-6" />
+                <p className="opacity-80 font-semibold">
+                  See your real time humidity
+                </p>
+              </div>
+            </div>
+            <Card className="w-full bg-[#1eff00] border-transparent my-12 md:w-1/2">
+              <CardHeader>
+                <CardTitle className="flex items-center justify-between w-fit gap-2">
+                  <img
+                    src={humidityImage}
+                    alt=""
+                    className="w-6 -mx-2 stroke-black"
+                  />
+                  Humidity
+                </CardTitle>
+                <CardDescription className="text-black text-3xl font-bold pt-4">
+                  {lastHumidity?.humidity}%
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                <ChartContainer config={chartConfig}>
+                  <BarChart
+                    accessibilityLayer
+                    data={humidity.slice(-6)}
+                    margin={{
+                      top: 30,
+                    }}
+                  >
+                    <CartesianGrid vertical={false} />
+                    <XAxis
+                      dataKey="time"
+                      tickLine={false}
+                      tickMargin={10}
+                      axisLine={false}
+                      tickFormatter={(value) => value.slice(0, 4)}
+                      style={{ fill: "#000000" }}
+                    />
+                    <ChartTooltip
+                      cursor={false}
+                      content={<ChartTooltipContent hideLabel 
+                      formatter={(value) => `${value}%`}
+                      className="text-white"
+                      />}
+                    />
+                    <Bar
+                      dataKey="humidity"
+                      fill="var(--color-humidity)"
+                      radius={8}
+                    >
+                      <LabelList
+                        position="top"
+                        offset={12}
+                        className="fill-foreground"
+                        fontSize={12}
+                      />
+                    </Bar>
+                  </BarChart>
+                </ChartContainer>
+              </CardContent>
+            </Card>
+          </div>
+          <Separator className="my-10 mx-auto opacity-100 bg-[#dcffd71a] p-[1px]" />
+
+          <div className="md:grid md:grid-cols-2 md:items-center">
+            <div className="mb-10">
+              <p className="text-5xl leading-snug tracking-wide font-[Roboto} xl:w-80 xl:text-6xl 2xl:text-8xl 2xl:w-[38rem]">
+                The current Soil Moisture
               </p>
             </div>
-          </div>
-          <Card className="w-full bg-[#1eff00] border-transparent my-12 md:w-1/2">
-            <CardHeader>
-              <CardTitle className="flex items-center justify-between w-fit gap-2">
-                <img src={humidityImage} alt="" className="w-6 -mx-2 stroke-black" />
-                Humidity
-              </CardTitle>
-              <CardDescription className="text-black text-3xl font-bold pt-4">
-                {lastHumidity}%
-              </CardDescription>
-            </CardHeader>
-            <CardContent>
-              <ChartContainer config={chartConfig}>
-                <BarChart
-                  accessibilityLayer
-                  data={humidity.slice(-6)}
-                  margin={{
-                    top: 30,
-                  }}
+            <Card className="flex flex-col bg-transparent border-none shadow-none mt-4">
+              <CardContent className="flex-1 pb-0">
+                <ChartContainer
+                  config={chartConfig}
+                  className="mx-auto aspect-square max-h-[450px] "
                 >
-                  <CartesianGrid vertical={false} />
-                  <XAxis
-                    dataKey="time"
-                    tickLine={false}
-                    tickMargin={10}
-                    axisLine={false}
-                    tickFormatter={(value) => value.slice(0, 4)}
-                    style={{ fill: "#000000" }}
-                  />
-                  <ChartTooltip
-                    cursor={false}
-                    content={<ChartTooltipContent hideLabel />}
-                  />
-                  <Bar
-                    dataKey="humidity"
-                    fill="var(--color-humidity)"
-                    radius={8}
+                  <RadialBarChart
+                    data={soilData}
+                    startAngle={90}
+                    endAngle={90 + endAngle}
+                    innerRadius={90}
+                    outerRadius={280}
                   >
-                    <LabelList
-                      position="top"
-                      offset={12}
-                      className="fill-foreground"
-                      fontSize={12}
+                    <PolarGrid
+                      gridType="circle"
+                      radialLines={false}
+                      stroke="none"
+                      className="first:fill-[#dcffd7] last:fill-background"
+                      polarRadius={[126, 54]}
                     />
-                  </Bar>
-                </BarChart>
-              </ChartContainer>
-            </CardContent>
-          </Card>
-        </div>
-        <Separator className="my-10 mx-auto opacity-100 bg-[#dcffd71a] p-[1px]" />
-
-        <div className="md:grid md:grid-cols-2 md:items-center">
-          <div className="mb-10">
-            <p className="text-5xl leading-snug tracking-wide font-[Roboto} xl:w-80 xl:text-6xl 2xl:text-8xl 2xl:w-[38rem]">
-              The current Soil Moisture
-            </p>
-          </div>
-          <Card className="flex flex-col bg-transparent border-none shadow-none mt-4">
-            <CardContent className="flex-1 pb-0">
-              <ChartContainer
-                config={chartConfig}
-                className="mx-auto aspect-square max-h-[450px] "
-              >
-                <RadialBarChart
-                  data={soilData}
-                  startAngle={90}
-                  endAngle={90 + endAngle}
-                  innerRadius={90}
-                  outerRadius={280}
-                >
-                  <PolarGrid
-                    gridType="circle"
-                    radialLines={false}
-                    stroke="none"
-                    className="first:fill-[#dcffd7] last:fill-background"
-                    polarRadius={[126, 54]}
-                  />
-                  <RadialBar
-                    dataKey="temperature"
-                    background
-                    cornerRadius={10}
-                  />
-                  <PolarRadiusAxis
-                    tick={false}
-                    tickLine={false}
-                    axisLine={false}
-                  >
-                    <Label
-                      content={({ viewBox }) => {
-                        if (viewBox && "cx" in viewBox && "cy" in viewBox) {
-                          return (
-                            <text
-                              x={viewBox.cx}
-                              y={viewBox.cy}
-                              textAnchor="middle"
-                              dominantBaseline="middle"
-                            >
-                              <tspan
+                    <RadialBar
+                      dataKey="temperature"
+                      background
+                      cornerRadius={10}
+                    />
+                    <PolarRadiusAxis
+                      tick={false}
+                      tickLine={false}
+                      axisLine={false}
+                    >
+                      <Label
+                        content={({ viewBox }) => {
+                          if (viewBox && "cx" in viewBox && "cy" in viewBox) {
+                            return (
+                              <text
                                 x={viewBox.cx}
                                 y={viewBox.cy}
-                                className="fill-secondary text-3xl font-bold "
+                                textAnchor="middle"
+                                dominantBaseline="middle"
                               >
-                                {soilData[0].temperature.toLocaleString() +
-                                  "%" || "-"}
-                              </tspan>
-                            </text>
-                          );
-                        }
-                      }}
-                    />
-                  </PolarRadiusAxis>
-                </RadialBarChart>
-              </ChartContainer>
-            </CardContent>
-          </Card>
-        </div>
-        {/*  <Separator className="my-10 w-[95%] mx-auto opacity-100 bg-[#dcffd71a] p-[1px]" />
+                                <tspan
+                                  x={viewBox.cx}
+                                  y={viewBox.cy}
+                                  className="fill-secondary text-3xl font-bold "
+                                >
+                                  {soilData[0].temperature.toLocaleString() +
+                                    "%" || "-"}
+                                </tspan>
+                              </text>
+                            );
+                          }
+                        }}
+                      />
+                    </PolarRadiusAxis>
+                  </RadialBarChart>
+                </ChartContainer>
+              </CardContent>
+            </Card>
+          </div>
+          {/*  <Separator className="my-10 w-[95%] mx-auto opacity-100 bg-[#dcffd71a] p-[1px]" />
 
        <div>
           <div>
@@ -365,7 +394,7 @@ function Home() {
             </div>
           </div>
         </div> */}
-      </div>
+        </div>
       </div>
       <Footer />
     </>
