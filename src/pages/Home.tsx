@@ -10,11 +10,6 @@ import {
   Bar,
   BarChart,
   LabelList,
-  Label,
-  PolarGrid,
-  PolarRadiusAxis,
-  RadialBar,
-  RadialBarChart,
 } from "recharts";
 import thermometer from "../assets/thermometer-warm.svg";
 import humidityImage from "../assets/humidity.svg";
@@ -50,11 +45,7 @@ const chartConfig = {
   },
 } satisfies ChartConfig;
 
-const soilData = [
-  { name: "Potassium", value: 20 },
-  { name: "Nitrogen", value: 30 },
-  { name: "Phosphorus", value: 50 },
-];
+
 function Home() {
   const [temperature, setTemperature] = useState<
     { time: string; temperature: number }[]
@@ -62,6 +53,8 @@ function Home() {
   const [humidity, setHumidity] = useState<
     { time: string; humidity: number }[]
   >([]);
+
+  const [nutrientsData, setNutrientsData] = useState({ potassium: 0, nitrogen: 0, phosphorus: 0 });
 
   // Update the state to hold an object
   const [lastTemperature, setLastTemperature] = useState<{
@@ -77,7 +70,7 @@ function Home() {
   const fetchTemperature = async () => {
     try {
       const response = await fetch(
-        "https://sugoi-api.vercel.app/agri/realtime_data"
+        "https://bulldog-promoted-accurately.ngrok-free.app/fetch-data"
       );
       const result = await response.json();
 
@@ -89,10 +82,25 @@ function Home() {
         humidity: result.humidity,
         timestamp: Date.now(),
       });
+      setNutrientsData({
+        potassium: result.potassium,
+        nitrogen: result.nitrogen,
+        phosphorus: result.phosphorus,
+      });
     } catch (error) {
       console.log(error);
     }
   };
+
+  useEffect(() => {
+    console.log("Nutrients data updated:", nutrientsData);
+  }, [nutrientsData]); // Runs whenever nutrientsData changes
+
+  const soilData = [
+    { name: "Potassium", value: nutrientsData.potassium },
+    { name: "Nitrogen", value: nutrientsData.nitrogen },
+    { name: "Phosphorus", value: nutrientsData.phosphorus },
+  ];
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -285,10 +293,10 @@ function Home() {
           <div className="md:grid md:grid-cols-2 md:items-center">
             <div className="mb-10">
               <p className="text-5xl leading-snug tracking-wide font-[Roboto} xl:w-80 xl:text-6xl 2xl:text-8xl 2xl:w-[38rem]">
-                The current Soil Moisture
+                NPK Graph
               </p>
             </div>
-            <Card className="lg:w-full bg-[#eaffe7] my-12 lg:my-10 md:w-[50%]">
+            <Card className="lg:w-full bg-[#eaffe7] my-12 lg:my-10 ">
               <CardHeader>
                 <CardTitle className="font-bold">NPK</CardTitle>
                 <CardDescription className="font-semibold">Nitrogen | Potassium | Phosphorus</CardDescription>
