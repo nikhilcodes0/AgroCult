@@ -3,8 +3,10 @@ import Footer from "../components/Footer";
 import { Separator } from "@/components/ui/separator";
 import greenLeaf from "../assets/green-leaf.png";
 import leafBg from "../assets/Leafbg.png";
-import img1 from "../assets/image1.png";
-import img2 from "../assets/image2.png";
+import img1 from "../assets/image1.jpg";
+import img2 from "../assets/image2.jpg";
+import img3 from "../assets/image3.jpg";
+import img4 from "../assets/image4.jpg";
 
 import "../App.css";
 
@@ -30,26 +32,27 @@ function About() {
             </div>
           </div>
           <div className="lg:w-[60%]">
-            <p className="text-7xl mt-5 mb-20 font-semibold hidden lg:block">About Us</p>
+            <p className="text-7xl mt-5 mb-5 font-semibold hidden lg:block">About Us</p>
+            <h1 className="text-xl italic my-5">Smart Farming Project at Hoskote Village, Bengaluru, Karnataka</h1>
             <p className="text-justify font-medium tracking-wider text-white text-lg paragraph ">
-              Lorem ipsum dolor sit, amet consectetur adipisicing elit. Quod totam
-              animi fugit fugiat laboriosam ad ab ut sit odio! Error, molestias
-              illum debitis at nesciunt quia sunt rem qui accusantium, incidunt
-              vel! In reiciendis tempora sit quam harum velit magnam nobis
-              deserunt veniam libero vel alias atque molestiae cupiditate amet
-              quia recusandae nostrum labore dolor at, error rerum laboriosam
-              repudiandae corporis. Rerum, omnis deserunt possimus ullam atque
-              error dicta sequi! <br />
+              At Kristu Jayanti College, we are committed to making a difference in rural communities through sustainable and innovative initiatives.
+              As part of this mission, we have adopted Hoskote Village in Bengaluru, Karnataka, and launched a transformative Smart Farming Project.
+              This initiative aims to empower local farmers with advanced technology and resources, enabling them to achieve higher productivity and resilience in agriculture.
               <br />
-              Lorem ipsum dolor sit, amet consectetur adipisicing elit. Nisi,
-              corrupti quos ratione totam necessitatibus laudantium quidem
-              provident exercitationem accusamus sint et impedit accusantium
-              cupiditate nulla voluptatem praesentium. Fugit adipisci harum quis
-              earum mollitia veniam atque hic porro autem repellendus suscipit
-              possimus quidem nesciunt, voluptatum cumque, odit aliquam.
-              Temporibus provident repellendus, nam at doloribus fugiat aperiam
-              maiores nobis iste cupiditate, impedit rem aspernatur possimus
-              suscipit. Ab saepe laborum quaerat voluptas excepturi!
+              <br />
+              Our Smart Farming Project leverages cutting-edge tools and techniques to support the unique needs of Hoskote's agricultural community.
+              Key components of the project include:
+              <dl>
+                <dt className="text-white font-semibold my-5 text-xl">1.	Weather Reporting</dt>
+                <dd className="text-white ml-5">Accurate weather forecasts are critical for farmers to plan their planting, irrigation, and harvesting activities.
+                  Our weather reporting systems provide real-time updates, helping farmers anticipate climatic conditions and make informed decisions to maximize crop yield and minimize risk.</dd>
+              </dl>
+              <dl>
+                <dt className="text-white font-semibold my-5 text-xl">2.	Soil Moisture & Nutrient (NPK) Testing</dt>
+                <dd className="text-white ml-5">Understanding soil health is fundamental to successful farming.
+                  Through regular soil moisture and nutrient testing, we provide insights into nitrogen, phosphorus, and potassium (NPK) levels, allowing farmers to tailor fertilization practices and improve soil quality. 
+                  This data-driven approach enhances crop growth, conserves resources, and promotes sustainable soil management.</dd>
+              </dl>
             </p>
           </div>
         </div>
@@ -57,34 +60,32 @@ function About() {
 
         <div className="bg-[#24513b] p-4 grid md:grid-cols-2 gap-3 rounded-lg w-[100%]">
           <div className="flex gap-2 w-full">
-            <img src={img1} alt="" className="w-[50%] rounded-md" />
-            <img src={img2} alt="" className="w-[50%] rounded-md"/>
+            <img src={img1} alt="" className="w-[50%] object-cover rounded-md" />
+            <img src={img2} alt="" className="w-[50%] object-cover rounded-md"/>
           </div>
           <div className="flex gap-2 w-full">
-            <img src={img1} alt="" className="w-[50%] rounded-md"/>
-            <img src={img2} alt="" className="w-[50%] rounded-md"/>
+            <img src={img3} alt="" className="w-[50%] object-cover rounded-md"/>
+            <img src={img4} alt="" className="w-[50%] object-cover rounded-md"/>
           </div>
         </div>
         <div className="mt-10">
           <p className="text-justify font-medium tracking-wider text-white text-lg paragraph">
-            Lorem ipsum dolor sit, amet consectetur adipisicing elit. Quod totam
-            animi fugit fugiat laboriosam ad ab ut sit odio! Error, molestias
-            illum debitis at nesciunt quia sunt rem qui accusantium, incidunt
-            vel! In reiciendis tempora sit quam harum velit magnam nobis
-            deserunt veniam libero vel alias atque molestiae cupiditate amet
-            quia recusandae nostrum labore dolor at, error rerum laboriosam
-            repudiandae corporis. Rerum, omnis deserunt possimus ullam atque
-            error dicta sequi! <br />
+          <dl>
+                <dt className="text-white font-semibold my-5 text-xl">3.	Smart Lighting & Irrigation</dt>
+                <dd className="text-white ml-5">Our project incorporates smart lighting solutions that optimize plant growth cycles and resource use. 
+                  By utilizing intelligent irrigation systems, we aim to reduce water wastage and ensure that crops receive the precise amount of water they need. 
+                  This automation not only increases crop yield but also conserves water, a vital resource in agriculture.</dd>
+              </dl>
+              <dl>
+                <dt className="text-white font-semibold my-5 text-xl">4.	Disease Identification and Management</dt>
+                <dd className="text-white ml-5">Early detection of crop diseases is crucial for preventing large-scale crop damage. 
+                  We provide farmers with tools to identify plant diseases through advanced image processing and pattern recognition. 
+                  This proactive approach enables timely intervention, helping farmers protect their crops and maintain healthy yields.</dd>
+              </dl>
             <br />
-            Lorem ipsum dolor sit, amet consectetur adipisicing elit. Nisi,
-            corrupti quos ratione totam necessitatibus laudantium quidem
-            provident exercitationem accusamus sint et impedit accusantium
-            cupiditate nulla voluptatem praesentium. Fugit adipisci harum quis
-            earum mollitia veniam atque hic porro autem repellendus suscipit
-            possimus quidem nesciunt, voluptatum cumque, odit aliquam.
-            Temporibus provident repellendus, nam at doloribus fugiat aperiam
-            maiores nobis iste cupiditate, impedit rem aspernatur possimus
-            suscipit. Ab saepe laborum quaerat voluptas excepturi!
+            <br />
+            Through the Smart Farming Project, Kristu Jayanti College empowers Hoskote Village farmers with the knowledge, skills, and technology needed to thrive in modern agriculture. 
+            This initiative embodies our dedication to community development, sustainable farming practices, and rural prosperity.
           </p>
         </div>
       </div>

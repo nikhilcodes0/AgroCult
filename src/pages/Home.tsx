@@ -228,7 +228,7 @@ const [lastHumidity, setLastHumidity] = useState<{ humidity: number; timestamp: 
                 </p>
               </div>
             </div>
-            <Card className="w-full bg-[#1eff00] border-transparent my-12 md:w-1/2">
+            <Card className="w-full bg-[#8bea7c] border-transparent my-12 md:w-1/2">
               <CardHeader>
                 <CardTitle className="flex items-center justify-between w-fit gap-2">
                   <img

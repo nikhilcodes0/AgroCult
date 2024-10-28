@@ -23,7 +23,7 @@ function Navbar() {
           <p className="logo text-white lg:text-xl">Smart Farming</p>
           <img src={logo} alt="logo" />
         </div>
-        <div className="text-white lg:mx-auto">
+        <div className="text-white right-0">
           <div className="hidden md:block ">
             <ul className="flex gap-8 pr-6 lg:mr-0 lg:gap-12 lg:text-lg text-[#DCFFD7] font-semibold">
               <a href="/">
