@@ -18,9 +18,6 @@ import {
 } from "recharts";
 import thermometer from "../assets/thermometer-warm.svg";
 import humidityImage from "../assets/humidity.svg";
-// import health from "../assets/health.svg";
-// import disease from "../assets/disease.png";
-// import plant from "../assets/plant.svg";
 
 import {
   Card,
@@ -30,8 +27,6 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
-// import { Checkbox } from "@/components/ui/checkbox";
-// import { Link } from "react-router-dom";
 
 import {
   ChartConfig,
@@ -55,11 +50,12 @@ const chartConfig = {
   },
 } satisfies ChartConfig;
 
-const soilData = [{ month: "January", temperature: "30", fill: "#8bea7c" }];
+const soilData = [
+  { name: "Potassium", value: 20 },
+  { name: "Nitrogen", value: 30 },
+  { name: "Phosphorus", value: 50 },
+];
 function Home() {
-  const soilPercentage = Number(soilData[0].temperature);
-  const endAngle = (soilPercentage / 100) * 360;
-
   const [temperature, setTemperature] = useState<
     { time: string; temperature: number }[]
   >([]);
@@ -68,9 +64,15 @@ function Home() {
   >([]);
 
   // Update the state to hold an object
-const [lastTemperature, setLastTemperature] = useState<{ temperature: number; timestamp: number } | null>(null);
+  const [lastTemperature, setLastTemperature] = useState<{
+    temperature: number;
+    timestamp: number;
+  } | null>(null);
 
-const [lastHumidity, setLastHumidity] = useState<{ humidity: number; timestamp: number } | null>(null);
+  const [lastHumidity, setLastHumidity] = useState<{
+    humidity: number;
+    timestamp: number;
+  } | null>(null);
 
   const fetchTemperature = async () => {
     try {
@@ -78,7 +80,6 @@ const [lastHumidity, setLastHumidity] = useState<{ humidity: number; timestamp: 
         "https://sugoi-api.vercel.app/agri/realtime_data"
       );
       const result = await response.json();
-      // console.log("Fetched Temperature Data:", result.temperature);
 
       setLastTemperature({
         temperature: result.temperature,
@@ -93,17 +94,13 @@ const [lastHumidity, setLastHumidity] = useState<{ humidity: number; timestamp: 
     }
   };
 
-
   useEffect(() => {
     const interval = setInterval(() => {
-      // console.log("Fetching Data...");
       fetchTemperature();
     }, 5000);
 
     return () => clearInterval(interval);
   }, []);
-
-
 
   useEffect(() => {
     if (lastTemperature !== null) {
@@ -116,12 +113,10 @@ const [lastHumidity, setLastHumidity] = useState<{ humidity: number; timestamp: 
           ...prevData,
           { ...newData, timestamp: lastTemperature.timestamp }, // Use the new timestamp
         ].slice(-20);
-        // console.log("Updated Temperature Data:", updatedData);
         return updatedData;
       });
     }
   }, [lastTemperature]);
-  
 
   useEffect(() => {
     if (lastHumidity !== null) {
@@ -130,21 +125,15 @@ const [lastHumidity, setLastHumidity] = useState<{ humidity: number; timestamp: 
         humidity: lastHumidity.humidity,
       };
       setHumidity((prevData) => {
-        // console.log("Previous Humidity Data:", prevData);
-        // console.log("New Humidity Data:", newData);
-
         // Include the timestamp to ensure the data is unique
         const updatedData = [
           ...prevData,
           { ...newData, timestamp: lastHumidity.timestamp }, // Add a unique timestamp
         ].slice(-20);
-        // console.log("Updated Humidity Data:", updatedData);
         return updatedData;
       });
     }
   }, [lastHumidity]);
-
-
 
   return (
     <>
@@ -167,7 +156,9 @@ const [lastHumidity, setLastHumidity] = useState<{ humidity: number; timestamp: 
               <CardHeader>
                 <CardTitle>Temperature</CardTitle>
                 <CardDescription className="text-black">
-                  <p className="font-semibold text-2xl">{lastTemperature?.temperature}°C</p>
+                  <p className="font-semibold text-2xl">
+                    {lastTemperature?.temperature}°C
+                  </p>
                 </CardDescription>
               </CardHeader>
               <CardContent className="">
@@ -195,11 +186,13 @@ const [lastHumidity, setLastHumidity] = useState<{ humidity: number; timestamp: 
 
                     <ChartTooltip
                       cursor={false}
-                      content={<ChartTooltipContent indicator="line" 
-                      className="text-white"
-                      formatter={(value) => `${value}°C`}
-
-                      />}
+                      content={
+                        <ChartTooltipContent
+                          indicator="line"
+                          className="text-white"
+                          formatter={(value) => `${value}°C`}
+                        />
+                      }
                     />
                     <Area
                       dataKey="temperature"
@@ -230,7 +223,7 @@ const [lastHumidity, setLastHumidity] = useState<{ humidity: number; timestamp: 
             </div>
             <Card className="w-full bg-[#8bea7c] border-transparent my-12 md:w-1/2">
               <CardHeader>
-                <CardTitle className="flex items-center justify-between w-fit gap-2">
+                <CardTitle className="flex items-center justify-between w-fit gap-3">
                   <img
                     src={humidityImage}
                     alt=""
@@ -262,10 +255,13 @@ const [lastHumidity, setLastHumidity] = useState<{ humidity: number; timestamp: 
                     />
                     <ChartTooltip
                       cursor={false}
-                      content={<ChartTooltipContent hideLabel 
-                      formatter={(value) => `${value}%`}
-                      className="text-white"
-                      />}
+                      content={
+                        <ChartTooltipContent
+                          hideLabel
+                          formatter={(value) => `${value}%`}
+                          className="text-white"
+                        />
+                      }
                     />
                     <Bar
                       dataKey="humidity"
@@ -292,61 +288,58 @@ const [lastHumidity, setLastHumidity] = useState<{ humidity: number; timestamp: 
                 The current Soil Moisture
               </p>
             </div>
-            <Card className="flex flex-col bg-transparent border-none shadow-none mt-4">
-              <CardContent className="flex-1 pb-0">
-                <ChartContainer
-                  config={chartConfig}
-                  className="mx-auto aspect-square max-h-[450px] "
-                >
-                  <RadialBarChart
+            <Card className="lg:w-full bg-[#eaffe7] my-12 lg:my-10 md:w-[50%]">
+              <CardHeader>
+                <CardTitle className="font-bold">NPK</CardTitle>
+                <CardDescription className="font-semibold">Nitrogen | Potassium | Phosphorus</CardDescription>
+              </CardHeader>
+              <CardContent>
+                <ChartContainer config={chartConfig}>
+                  <BarChart
+                    accessibilityLayer
                     data={soilData}
-                    startAngle={90}
-                    endAngle={90 + endAngle}
-                    innerRadius={90}
-                    outerRadius={280}
+                    layout="vertical"
+                    margin={{
+                      right: 16,
+                    }}
                   >
-                    <PolarGrid
-                      gridType="circle"
-                      radialLines={false}
-                      stroke="none"
-                      className="first:fill-[#dcffd7] last:fill-background"
-                      polarRadius={[126, 54]}
-                    />
-                    <RadialBar
-                      dataKey="temperature"
-                      background
-                      cornerRadius={10}
-                    />
-                    <PolarRadiusAxis
-                      tick={false}
+                    <CartesianGrid horizontal={false} />
+                    <YAxis
+                      dataKey="name"
+                      type="category"
                       tickLine={false}
+                      tickMargin={10}
                       axisLine={false}
+                      tickFormatter={(value) => value.slice(0, 3)}
+                      hide
+                    />
+                    <XAxis dataKey="value" type="number" hide />
+                    <ChartTooltip
+                      cursor={false}
+                      content={<ChartTooltipContent indicator="line" className="text-white"/>}
+                    />
+                    <Bar
+                      dataKey="value"
+                      layout="vertical"
+                      fill="var(--color-temperature)"
+                      radius={5}
                     >
-                      <Label
-                        content={({ viewBox }) => {
-                          if (viewBox && "cx" in viewBox && "cy" in viewBox) {
-                            return (
-                              <text
-                                x={viewBox.cx}
-                                y={viewBox.cy}
-                                textAnchor="middle"
-                                dominantBaseline="middle"
-                              >
-                                <tspan
-                                  x={viewBox.cx}
-                                  y={viewBox.cy}
-                                  className="fill-secondary text-3xl font-bold "
-                                >
-                                  {soilData[0].temperature.toLocaleString() +
-                                    "%" || "-"}
-                                </tspan>
-                              </text>
-                            );
-                          }
-                        }}
+                      <LabelList
+                        dataKey="name"
+                        position="insideLeft"
+                        offset={8}
+                        className="fill-[--color-label]"
+                        fontSize={15}
                       />
-                    </PolarRadiusAxis>
-                  </RadialBarChart>
+                      <LabelList
+                        dataKey="value"
+                        position="right"
+                        offset={8}
+                        className="fill-foreground"
+                        fontSize={15}
+                      />
+                    </Bar>
+                  </BarChart>
                 </ChartContainer>
               </CardContent>
             </Card>
