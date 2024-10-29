@@ -45,7 +45,6 @@ const chartConfig = {
   },
 } satisfies ChartConfig;
 
-
 function Home() {
   const [temperature, setTemperature] = useState<
     { time: string; temperature: number }[]
@@ -54,7 +53,11 @@ function Home() {
     { time: string; humidity: number }[]
   >([]);
 
-  const [nutrientsData, setNutrientsData] = useState({ potassium: 0, nitrogen: 0, phosphorus: 0 });
+  const [nutrientsData, setNutrientsData] = useState({
+    potassium: 0,
+    nitrogen: 0,
+    phosphorus: 0,
+  });
 
   // Update the state to hold an object
   const [lastTemperature, setLastTemperature] = useState<{
@@ -67,7 +70,7 @@ function Home() {
     timestamp: number;
   } | null>(null);
 
-  const fetchTemperature = async () => {
+  const fetchChartData = async () => {
     try {
       const response = await fetch(
         "https://bulldog-promoted-accurately.ngrok-free.app/fetch-data"
@@ -83,9 +86,9 @@ function Home() {
         timestamp: Date.now(),
       });
       setNutrientsData({
-        potassium: result.potassium,
-        nitrogen: result.nitrogen,
-        phosphorus: result.phosphorus,
+        potassium: result.potassium >= 0 ? result.potassium : 0,
+        nitrogen: result.nitrogen >= 0 ? result.nitrogen : 0,
+        phosphorus: result.phosphorus >= 0 ? result.phosphorus : 0,
       });
     } catch (error) {
       console.log(error);
@@ -104,7 +107,7 @@ function Home() {
 
   useEffect(() => {
     const interval = setInterval(() => {
-      fetchTemperature();
+      fetchChartData();
     }, 5000);
 
     return () => clearInterval(interval);
@@ -142,6 +145,11 @@ function Home() {
       });
     }
   }, [lastHumidity]);
+
+  const processedData = soilData.map((item) => ({
+    ...item,
+    valuePositive: item.value > 0 ? item.value : 0,
+  }));
 
   return (
     <>
@@ -299,13 +307,15 @@ function Home() {
             <Card className="lg:w-full bg-[#eaffe7] my-12 lg:my-10 ">
               <CardHeader>
                 <CardTitle className="font-bold">NPK</CardTitle>
-                <CardDescription className="font-semibold">Nitrogen | Potassium | Phosphorus</CardDescription>
+                <CardDescription className="font-semibold">
+                  Nitrogen | Potassium | Phosphorus
+                </CardDescription>
               </CardHeader>
               <CardContent>
                 <ChartContainer config={chartConfig}>
                   <BarChart
                     accessibilityLayer
-                    data={soilData}
+                    data={processedData}
                     layout="vertical"
                     margin={{
                       right: 16,
@@ -324,7 +334,12 @@ function Home() {
                     <XAxis dataKey="value" type="number" hide />
                     <ChartTooltip
                       cursor={false}
-                      content={<ChartTooltipContent indicator="line" className="text-white"/>}
+                      content={
+                        <ChartTooltipContent
+                          indicator="line"
+                          className="text-white"
+                        />
+                      }
                     />
                     <Bar
                       dataKey="value"
@@ -335,7 +350,7 @@ function Home() {
                       <LabelList
                         dataKey="name"
                         position="insideLeft"
-                        offset={8}
+                        offset={16}
                         className="fill-[--color-label]"
                         fontSize={15}
                       />
@@ -345,6 +360,7 @@ function Home() {
                         offset={8}
                         className="fill-foreground"
                         fontSize={15}
+                        formatter={(value: number) => (value > 0 ? value : "")}
                       />
                     </Bar>
                   </BarChart>

@@ -27,12 +27,14 @@ function Navbar() {
           <div className="hidden md:block ">
             <ul className="flex gap-8 pr-6 lg:mr-0 lg:gap-12 lg:text-lg text-[#DCFFD7] font-semibold">
               <a href="/">
-              <li className="cursor-pointer hover:text-white">Home</li>
+                <li className="cursor-pointer hover:text-white">Home</li>
               </a>
               <a href="/stats">
-              <li className="cursor-pointer hover:text-white">Stats</li>
+                <li className="cursor-pointer hover:text-white">Stats</li>
               </a>
+              <a href="https://www.kristujayanti.edu.in/home/contact-us.php">
               <li className="cursor-pointer hover:text-white">Contact Us</li>
+              </a>
             </ul>
           </div>
           <Sheet>
@@ -75,13 +77,15 @@ function Navbar() {
                     </Link>
                   </SheetClose>
                   <SheetClose className="w-full">
-                    <Button
-                      variant="secondary"
-                      size="icon"
-                      className="h-12 w-full shrink-0 rounded-full"
-                    >
-                      Contact Us
-                    </Button>
+                    <a href="https://www.kristujayanti.edu.in/home/contact-us.php">
+                      <Button
+                        variant="secondary"
+                        size="icon"
+                        className="h-12 w-full shrink-0 rounded-full"
+                      >
+                        Contact Us
+                      </Button>
+                    </a>
                   </SheetClose>
                 </div>
               </div>
