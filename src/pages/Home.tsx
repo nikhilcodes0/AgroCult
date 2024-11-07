@@ -73,7 +73,7 @@ function Home() {
   const fetchChartData = async () => {
     try {
       const response = await fetch(
-        "https://bulldog-promoted-accurately.ngrok-free.app/fetch-data"
+        "https://sugoi-api.vercel.app/agri/realtime_data"
       );
       const result = await response.json();
 

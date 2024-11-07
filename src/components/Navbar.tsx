@@ -20,7 +20,7 @@ function Navbar() {
     <div className="bg-[rgba(255,_255,_255,_0.05)] border-[1.3px]  border-[rgba(255,255,255,0.05)] rounded-xl w-[90%] mx-auto my-6 px-3 py-4 ">
       <div className="flex justify-between">
         <div className="flex gap-2 items-center">
-          <p className="logo text-white lg:text-xl">Smart Farming</p>
+          <p className="logo text-white lg:text-xl">KJC Smart Agri</p>
           <img src={logo} alt="logo" />
         </div>
         <div className="text-white right-0">
@@ -39,7 +39,7 @@ function Navbar() {
           </div>
           <Sheet>
             <SheetTrigger asChild>
-              <Button size="icon" className="md:hidden">
+              <Button size="icon" className="md:hidden ">
                 <HamburgerMenuIcon />
               </Button>
             </SheetTrigger>
